@@ -287,51 +287,50 @@ describe("error handling", function() {
   });
 
   it("throws error on missing value when value is unquoted", function() {
-    expect(
-      () => {
-        var p = kvParser.parse("key=");
-        p == errorChecker("key", 3, MissingValueError)(p);
-      }).to.throw(MissingValueError);
+    try {
+      var p = kvParser.parse("key=");
+    } catch (e) {
+      chaiAssert.isOk(errorChecker("key", 3, MissingValueError)(e));
+    }
   });
 
   it("throws error on missing value when value is quoted", function() {
-    expect(
-      () => {
-        var p = kvParser.parse("key=\"value")
-        p == errorChecker("key", 9, MissingEndQuoteError)(p);
-      }).to.throw(MissingEndQuoteError);
+    try {
+      var p = kvParser.parse("key=\"value")
+    } catch (e) {
+      chaiAssert.isOk(errorChecker("key", 9, MissingEndQuoteError)(e));
+    }
   });
 
   it("throws error on missing key", function() {
-    expect(
-      () => {
-        var p = kvParser.parse("=value");
-        p == errorChecker(undefined, 0, MissingKeyError)(p);
-      }).to.throw(MissingKeyError)
+    try {
+      var p = kvParser.parse("=value");
+    } catch (e) {
+      chaiAssert.isOk(errorChecker(undefined, 0, MissingKeyError)(e));
+    }
   });
 
   it("throws error on invalid key", function() {
-    expect(
-      () => {
-        var p = kvParser.parse("'foo'=value");
-        p == errorChecker(undefined, 0, MissingKeyError)(p);
-      }).to.throw(MissingKeyError)
+    try {
+      var p = kvParser.parse("'foo'=value");
+    } catch (e) {
+      chaiAssert.isOk(errorChecker(undefined, 0, MissingKeyError)(e));
+    }
   });
 
   it("throws error on missing assignment operator", function() {
-    expect(
-      () => {
-        var p = kvParser.parse("key value");
-        p = errorChecker(undefined, 4, MissingAssignmentOperatorError)(p);
-      }).to.throw(MissingAssignmentOperatorError)
+    try {
+      var p = kvParser.parse("key value");
+    } catch (e) {
+      chaiAssert.isOk(errorChecker(undefined, 4, MissingAssignmentOperatorError)(e));
+    }
   });
 
   it("throws error on incomplete key value pair", function() {
-    expect(
-      () => {
-        var p = kvParser.parse("key");
-        p == errorChecker(undefined, 2, IncompleteKeyValuePairError)(p);
-      }).to.throw(IncompleteKeyValuePairError);
+    try {
+      var p = kvParser.parse("key");
+    } catch (e) {
+      chaiAssert.isOk(errorChecker(undefined, 2, IncompleteKeyValuePairError)(e));
+    }
   });
-
-});
+})
