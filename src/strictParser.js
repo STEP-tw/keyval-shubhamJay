@@ -7,7 +7,7 @@ var StrictParser = function(listOfKeys, caseSentiviFlag = true) {
     listOfKeys = this.getLowerCaseValidKeys(listOfKeys);
   };
   let sanitisedListOfKeys = listOfKeys || [];
-  this.parseInfoCreator = strictParseInfoCreator(sanitisedListOfKeys);
+  this.parseInfoCreator = strictParseInfoCreator(sanitisedListOfKeys,caseSentiviFlag);
 }
 
 StrictParser.prototype = Object.create(Parser.prototype);

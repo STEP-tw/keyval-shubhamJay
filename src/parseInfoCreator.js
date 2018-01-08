@@ -7,7 +7,7 @@ const basic=function(initialParsingFunction) {
 
 const strict=function(listOfKeys,flag) {
   return function(initialParsingFunction) {
-    return new StrictParseInfo(initialParsingFunction,listOfKeys);
+    return new StrictParseInfo(initialParsingFunction,listOfKeys,flag);
   }
 }
 module.exports = {
