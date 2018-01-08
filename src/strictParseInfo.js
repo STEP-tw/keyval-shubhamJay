@@ -5,11 +5,11 @@ const InvalidKeyError = require("./errors/invalidKeyError.js");
 const contains = function(list, key, flag) {
   return list.find(function(validKey) {
     if (flag) return key == validKey;
-    return key.toLowerCase() == validKey;
+    return key.toLowerCase() == validKey.toLowerCase();
   });
 }
 
-var StrictParseInfo = function(initialParsingFunction, validKeys, flag = true) {
+var StrictParseInfo = function(initialParsingFunction, validKeys, flag) {
   ParseInfo.call(this, initialParsingFunction);
   this.flag = flag;
   this.validKeys = validKeys;

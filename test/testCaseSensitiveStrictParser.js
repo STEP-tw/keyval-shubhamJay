@@ -8,22 +8,6 @@ const StrictParser = require(src('index.js')).StrictParser;
 
 describe("strict parser that is case insensitive", function() {
 
-  describe("getLowerCaseValidKeys gives lower case of given keys", () => {
-    let kvParser = new StrictParser(["name"], false);
-    it('should give lower case version of given key', () => {
-      let expect = ["name", 'name'];
-      assert.deepEqual(expect, kvParser.getLowerCaseValidKeys(["name", "NAME"]));
-    })
-    it('should give lower case version of given key if there are underscores', () => {
-      let expect = ["your_name", "your_name"];
-      assert.deepEqual(expect, kvParser.getLowerCaseValidKeys(["your_name", "YOUR_NAME"]));
-    })
-    it('should give lower case version of given key if key has numbers', () => {
-      let expect = ["name123"];
-      assert.deepEqual(expect, kvParser.getLowerCaseValidKeys(["NAME123"]));
-    })
-  })
-
   it("should parse when specified keys are in lower case and actual is not", function() {
     let kvParser = new StrictParser(["name"], false);
     let expected = new Parsed();
