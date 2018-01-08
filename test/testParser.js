@@ -290,7 +290,7 @@ describe("error handling", function() {
     expect(
       () => {
         var p = kvParser.parse("key=");
-        p == errorChecker("key", 3, MissingValueError)();
+        p == errorChecker("key", 3, MissingValueError)(p);
       }).to.throw(MissingValueError);
   });
 
@@ -298,7 +298,7 @@ describe("error handling", function() {
     expect(
       () => {
         var p = kvParser.parse("key=\"value")
-        p == errorChecker("key", 9, MissingEndQuoteError)();
+        p == errorChecker("key", 9, MissingEndQuoteError)(p);
       }).to.throw(MissingEndQuoteError);
   });
 
@@ -306,7 +306,7 @@ describe("error handling", function() {
     expect(
       () => {
         var p = kvParser.parse("=value");
-        p == errorChecker(undefined, 0, MissingKeyError)();
+        p == errorChecker(undefined, 0, MissingKeyError)(p);
       }).to.throw(MissingKeyError)
   });
 
@@ -314,7 +314,7 @@ describe("error handling", function() {
     expect(
       () => {
         var p = kvParser.parse("'foo'=value");
-        p == errorChecker(undefined, 0, MissingKeyError)();
+        p == errorChecker(undefined, 0, MissingKeyError)(p);
       }).to.throw(MissingKeyError)
   });
 
@@ -322,7 +322,7 @@ describe("error handling", function() {
     expect(
       () => {
         var p = kvParser.parse("key value");
-        p = errorChecker(undefined, 4, MissingAssignmentOperatorError)();
+        p = errorChecker(undefined, 4, MissingAssignmentOperatorError)(p);
       }).to.throw(MissingAssignmentOperatorError)
   });
 
@@ -330,7 +330,7 @@ describe("error handling", function() {
     expect(
       () => {
         var p = kvParser.parse("key");
-        p == errorChecker(undefined, 2, IncompleteKeyValuePairError)();
+        p == errorChecker(undefined, 2, IncompleteKeyValuePairError)(p);
       }).to.throw(IncompleteKeyValuePairError);
   });
 

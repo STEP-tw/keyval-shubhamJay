@@ -24,8 +24,8 @@ describe("strict parser", function() {
         let kvParser = new StrictParser(["name"]);
         expect(
           () => {
-            var p = kvParser.parse("age=23")();
-            p == invalidKeyErrorChecker("age",5)();
+            var p = kvParser.parse("age=23")(p);
+            p == invalidKeyErrorChecker("age",5)(p);
           }).to.throw(InvalidKeyError);
       })
 
@@ -40,7 +40,7 @@ describe("strict parser", function() {
         expect(
           () => {
             var p = kvParser.parse("color=blue");
-            p == invalidKeyErrorChecker("color", 9)();
+            p == invalidKeyErrorChecker("color", 9)(p);
           }).to.throw(InvalidKeyError);
       });
 
@@ -49,7 +49,7 @@ describe("strict parser", function() {
           () => {
             let kvParser = new StrictParser(["name", "age"]);
             var p = kvParser.parse("name=john color=blue age=23");
-            p == invalidKeyErrorChecker("color", 20)();
+            p == invalidKeyErrorChecker("color", 20)(p);
           }).to.throw(InvalidKeyError);
       });
 
@@ -58,7 +58,7 @@ describe("strict parser", function() {
           () => {
             let kvParser = new StrictParser(["name", "age"]);
             var p = kvParser.parse("color   = blue");
-            p == invalidKeyErrorChecker("color", 13)();
+            p == invalidKeyErrorChecker("color", 13)(p);
           }).to.throw(InvalidKeyError);
       });
 
@@ -67,7 +67,7 @@ describe("strict parser", function() {
           () => {
             let kvParser = new StrictParser(["name", "age"]);
             var p = kvParser.parse("color   = \"blue\"");
-            p == invalidKeyErrorChecker("color", 15)();
+            p == invalidKeyErrorChecker("color", 15)(p);
           }).to.throw(InvalidKeyError);
       });
 
@@ -76,7 +76,7 @@ describe("strict parser", function() {
           () => {
             let kvParser = new StrictParser(["name", "age"]);
             var p = kvParser.parse("name = john color   = \"light blue\"");
-            p == invalidKeyErrorChecker("color", 33)();
+            p == invalidKeyErrorChecker("color", 33)(p);
           }).to.throw(InvalidKeyError);
       });
 
@@ -85,7 +85,7 @@ describe("strict parser", function() {
           () => {
             let kvParser = new StrictParser([]);
             var p = kvParser.parse("name=john");
-            p == invalidKeyErrorChecker("name", 8)();
+            p == invalidKeyErrorChecker("name", 8)(p);
           }).to.throw(InvalidKeyError);
       });
 
@@ -94,7 +94,7 @@ describe("strict parser", function() {
             () => {
               let kvParser = new StrictParser();
               var p = kvParser.parse("name=john");
-              p == invalidKeyErrorChecker("name", 8)();
+              p == invalidKeyErrorChecker("name", 8)(p);
             }).to.throw(InvalidKeyError);
           });
       });
