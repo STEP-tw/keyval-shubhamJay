@@ -5,8 +5,10 @@ const errors = function(filePath) {
   return "../src/errors/" + filePath
 };
 
-const assert = require('assert');
-const chaiAssert = require("chai").assert;
+// const assert = require('assert');
+const chai = require('chai');
+const chaiAssert = chai.assert;
+const expect = chai.expect;
 const Parser = require(src('index.js')).Parser;
 const MissingValueError = require(errors('missingValueError.js'));
 const MissingEndQuoteError = require(errors('missingEndQuoteError.js'));
@@ -23,13 +25,13 @@ describe("parse basic key values", function() {
 
   it("parses an empty string", function() {
     let actual = kvParser.parse("");
-    assert.equal(0, actual.length());
+    chaiAssert.equal(0, actual.length());
   });
 
   it("parse key=value", function() {
     let actual = kvParser.parse("key=value");
-    assert.equal("value", actual.key);
-    assert.equal(1, actual.length());
+    chaiAssert.equal("value", actual.key);
+    chaiAssert.equal(1, actual.length());
   });
 
   it("parse when there are leading spaces before key", function() {
@@ -285,56 +287,51 @@ describe("error handling", function() {
   });
 
   it("throws error on missing value when value is unquoted", function() {
-    assert.throws(
+    expect(
       () => {
-        kvParser.parse("key=")
-      },
-      errorChecker("key", 3, MissingValueError))
+        var p = kvParser.parse("key=");
+        p == errorChecker("key", 3, MissingValueError)();
+      }).to.throw(MissingValueError);
   });
 
   it("throws error on missing value when value is quoted", function() {
-    assert.throws(
+    expect(
       () => {
-        kvParser.parse("key=\"value")
-      },
-      errorChecker("key", 9, MissingEndQuoteError)
-    )
+        var p = kvParser.parse("key=\"value")
+        p == errorChecker("key", 9, MissingEndQuoteError)();
+      }).to.throw(MissingEndQuoteError);
   });
 
   it("throws error on missing key", function() {
-    assert.throws(
+    expect(
       () => {
         var p = kvParser.parse("=value");
-      },
-      errorChecker(undefined, 0, MissingKeyError)
-    )
+        p == errorChecker(undefined, 0, MissingKeyError)();
+      }).to.throw(MissingKeyError)
   });
 
   it("throws error on invalid key", function() {
-    assert.throws(
+    expect(
       () => {
         var p = kvParser.parse("'foo'=value");
-      },
-      errorChecker(undefined, 0, MissingKeyError)
-    )
+        p == errorChecker(undefined, 0, MissingKeyError)();
+      }).to.throw(MissingKeyError)
   });
 
   it("throws error on missing assignment operator", function() {
-    assert.throws(
+    expect(
       () => {
         var p = kvParser.parse("key value");
-      },
-      errorChecker(undefined, 4, MissingAssignmentOperatorError)
-    )
+        p = errorChecker(undefined, 4, MissingAssignmentOperatorError)();
+      }).to.throw(MissingAssignmentOperatorError)
   });
 
   it("throws error on incomplete key value pair", function() {
-    assert.throws(
+    expect(
       () => {
         var p = kvParser.parse("key");
-      },
-      errorChecker(undefined, 2, IncompleteKeyValuePairError)
-    )
+        p == errorChecker(undefined, 2, IncompleteKeyValuePairError)();
+      }).to.throw(IncompleteKeyValuePairError);
   });
 
 });
